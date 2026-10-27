@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Compile
+        run: python -m compileall -q api assessor internal_console tests
+      - name: Test
+        run: pytest -q
+      - name: Validate Docker Compose
+        run: |
+          docker compose config
+          LAB_JWT_SECRET=ci-only-generated-demo-value-32-bytes-1234567890 docker compose -f docker-compose.yml -f docker-compose.hardened.yml config
