@@ -1,0 +1,24 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      LAB_MODE: vulnerable
+      LAB_JWT_SECRET: "731942"
+      INTERNAL_CONSOLE_URL: "http://internal-console:3001"
+    depends_on:
+      - internal-console
+    networks:
+      - range-net
+
+  internal-console:
+    build: ./internal_console
+    expose:
+      - "3001"
+    networks:
+      - range-net
+
+networks:
+  range-net:
+    driver: bridge

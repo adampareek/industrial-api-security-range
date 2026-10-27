@@ -1,0 +1,5 @@
+services:
+  api:
+    environment:
+      LAB_MODE: hardened
+      LAB_JWT_SECRET: "${LAB_JWT_SECRET:?Set LAB_JWT_SECRET to a random 32-byte hex key for hardened mode}"
